@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeText, analyzeUrl, analyzeImage } from '../api/api';
 import LoadingState from '../components/LoadingState';
+import LanguageSelector from '../components/LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 
 const TABS = [
   { key: 'text', icon: '📝', label: 'Text Analysis' },
@@ -44,6 +46,7 @@ function ShieldLogo({ size = 22 }) {
 export default function AnalyzePage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { selectedLanguage, setDetectedLanguage } = useLanguage();
 
   const [tab, setTab] = useState('text');
   const [textInput, setTextInput] = useState(location.state?.prefill || '');
@@ -63,9 +66,15 @@ export default function AnalyzePage() {
     setLoading(true);
     try {
       let res;
-      if (tab === 'text') res = await analyzeText(textInput);
-      else if (tab === 'url') res = await analyzeUrl(urlInput);
-      else res = await analyzeImage(imageFile);
+      if (tab === 'text') res = await analyzeText(textInput, selectedLanguage);
+      else if (tab === 'url') res = await analyzeUrl(urlInput, selectedLanguage);
+      else res = await analyzeImage(imageFile, selectedLanguage);
+      
+      // Update detected language in context
+      if (res.data?.detectedLanguage) {
+        setDetectedLanguage(res.data.detectedLanguage);
+      }
+      
       navigate('/results', { state: { result: res.data } });
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Analysis failed');
@@ -87,6 +96,7 @@ export default function AnalyzePage() {
           </span>
         </div>
         <div className="flex items-center gap-5 text-sm text-gray-400">
+          <LanguageSelector />
           <button onClick={() => navigate('/history')} className="hover:text-white transition">History</button>
           <button onClick={() => navigate('/')} className="hover:text-white transition font-medium text-blue-400 border-b border-blue-400 pb-0.5">Dashboard</button>
         </div>

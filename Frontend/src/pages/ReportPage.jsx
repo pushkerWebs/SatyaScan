@@ -86,7 +86,12 @@ export default function ReportPage() {
         <div className="bg-gray-900 border border-gray-700 rounded-xl p-5 mb-5">
           <div className="flex gap-4 text-sm flex-wrap">
             <span className="text-gray-400">Input: <span className="text-white capitalize">{check.inputType}</span></span>
-            <span className="text-gray-400">Language: <span className="text-white uppercase">{check.language}</span></span>
+            {(check.detectedLanguage || check.language) && (
+              <span className="text-gray-400">Detected: <span className="text-white uppercase">{check.detectedLanguage || check.language}</span></span>
+            )}
+            {check.responseLanguage && (
+              <span className="text-gray-400">Response: <span className="text-white uppercase">{check.responseLanguage}</span></span>
+            )}
             <span className="text-gray-400">Claims: <span className="text-white">{check.claims?.length}</span></span>
           </div>
         </div>

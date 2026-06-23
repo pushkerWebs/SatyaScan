@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import AnalyzePage from './pages/AnalyzePage';
@@ -28,26 +29,28 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/analyze" element={<AnalyzePage />} />
-              <Route path="/results" element={<ResultsPage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/report/:id" element={<ReportPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="*" element={
-                <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-                  <h2 className="text-white text-2xl font-bold mb-2">404</h2>
-                  <p className="text-gray-400 mb-4">Page not found</p>
-                  <a href="/" className="text-blue-400 hover:underline">← Go Home</a>
-                </div>
-              } />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
+        <LanguageProvider>
+          <BrowserRouter>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/analyze" element={<AnalyzePage />} />
+                <Route path="/results" element={<ResultsPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/report/:id" element={<ReportPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="*" element={
+                  <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+                    <h2 className="text-white text-2xl font-bold mb-2">404</h2>
+                    <p className="text-gray-400 mb-4">Page not found</p>
+                    <a href="/" className="text-blue-400 hover:underline">← Go Home</a>
+                  </div>
+                } />
+              </Routes>
+            </Layout>
+          </BrowserRouter>
+        </LanguageProvider>
       </AuthProvider>
     </ThemeProvider>
   );

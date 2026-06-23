@@ -337,7 +337,8 @@ export default function ResultsPage() {
 
   const {
     inputType, trustScore, aiLikelihood, aiScore, aiReasoning,
-    sourceCredibility, language, claims = [], checkId, apiWorking,
+    sourceCredibility, language, detectedLanguage, responseLanguage,
+    claims = [], checkId, apiWorking,
   } = result;
 
   const supported = claims.filter(c => ['Supported', 'True'].includes(c.verdict)).length;
@@ -399,9 +400,14 @@ export default function ResultsPage() {
                   {inputType === 'text' ? '📝' : inputType === 'url' ? '🔗' : '🖼️'} {inputType} analysis
                 </span>
               )}
-              {language && language !== 'unknown' && (
+              {detectedLanguage && detectedLanguage !== 'unknown' && (
                 <span className="text-xs border border-blue-800 text-blue-400 bg-blue-900/20 px-2 py-1 rounded-full">
-                  🌐 {language.toUpperCase()}
+                  🌍 Detected: {detectedLanguage.toUpperCase()}
+                </span>
+              )}
+              {responseLanguage && responseLanguage !== 'unknown' && (
+                <span className="text-xs border border-cyan-800 text-cyan-400 bg-cyan-900/20 px-2 py-1 rounded-full">
+                  💬 Response: {responseLanguage.toUpperCase()}
                 </span>
               )}
             </div>
